@@ -15,7 +15,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# Allow only 2 methods, HEAD and OPTIONS implicitly allowed
+# Allow only 2 methods explicitly, but HEAD and OPTIONS implicitly allowed
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -48,6 +48,7 @@ def upload_file():
          <input type=submit value=Upload>
     </form>
     '''
+
 @app.route('/uploads')
 def display_uploads():
     files = os.listdir(app.config['UPLOAD_FOLDER'])
@@ -59,7 +60,9 @@ def display_uploads():
 
 # https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https
 if __name__ == "__main__":
+    app.run()
     # quick and dirty ssl
-    app.run(ssl_context='adhoc')
+    #app.run(ssl_context='adhoc', debug=True)
+    #nicer ssl, but you need to generate certs
     #context = ('local.crt', 'local.key')#certificate and key files
     #app.run(ssl_context=context)
